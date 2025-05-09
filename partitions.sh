@@ -12,4 +12,11 @@ if [[ "$DELETE_PARTITIONS" != "yes" ]]; then
 fi
 
 # Deletes all partitions on $DRIVE
+echo "Deleting all partitions on disk"
+echo "..."
 sfdisk --delete $DRIVE
+
+# Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
+echo "Creating partitions"
+echo "..."
+echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $DRIVE
