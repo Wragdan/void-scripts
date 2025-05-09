@@ -63,3 +63,10 @@ green "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
 green "Opening encrypted partition"
 cryptsetup luksOpen $PART_LINUX cryptvoid
+
+green "Formatting partitions"
+green "Formatting EFI partition"
+mkfs.fat -F32 -n EFI $PART_EFI
+green "Formatting root partition"
+mkfs.btrfs -L Void /dev/mapper/cryptvoid
+
