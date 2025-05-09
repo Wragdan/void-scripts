@@ -42,3 +42,8 @@ if [[ -z "$PART_EFI" ]]; then
     echo "Could not detect efi partition. aborting..."
     exit 1
 fi
+
+echo "Encrypting Linux partition"
+echo "Please complete the installation by providing the necessary inputs"
+cryptsetup luksFormat --type luks1 -y $PART_LINUX
+cryptsetup luksOpen $PART_LINUX cryptvoid
