@@ -12,7 +12,7 @@ bold_red() { echo -e "\033[1;31m$*\033[0m"; }
 # Check if crypt is already open. Useful for development of the script
 CRYPT_OPEN=$(cryptsetup status cryptvoid)
 
-if [[ $CRYPT_OPEN == *is active* ]]; then
+if [[ $CRYPT_OPEN != *inactive* ]]; then
     red "Crypt is open, closing..."
     cryptsetup close cryptvoid
 fi
