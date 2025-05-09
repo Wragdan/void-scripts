@@ -87,7 +87,7 @@ install_items+=" /boot/volume.key /etc/crypttab "
 EOF
 
 green "Installing bootloader onto disk"
-grub-install $FULL_DRIVE
+grub-install $FULL_DRIVE --removable #my pc needs this
 
 green "Ensure an initramfs is generated"
 xbps-reconfigure -fa
