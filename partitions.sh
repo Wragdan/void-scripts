@@ -8,13 +8,13 @@ bold_red() { echo -e "\033[1;31m$*\033[0m"; }
 CRYPT_OPEN=$(cryptsetup status cryptvoid)
 
 if [[ $CRYPT_OPEN != *inactive* ]]; then
-    red "Crypt is open, closing..."
-    cryptsetup close cryptvoid
     red "Unmounting in case disks are mounted"
     umount /mnt/.snapshots
     umount /mnt/home
     umount /mnt/boot/efi
     umount /mnt
+    red "Crypt is open, closing..."
+    cryptsetup close cryptvoid
 fi
 
 echo "Enter drive to use for installation without the '/dev/'. Ex. nvme0n1, sda, sdb, etc..."
