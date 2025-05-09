@@ -21,6 +21,7 @@ echo "Enter drive to use for installation without the '/dev/'. Ex. nvme0n1, sda,
 read DRIVE
 
 FULL_DRIVE="/dev/$DRIVE"
+echo "export FULL_DRIVE=$FULL_DRIVE" >> env.bash
 
 red "WARNING!!! This script will delete all partitions, write 'yes' to continue"
 read ANSWER
