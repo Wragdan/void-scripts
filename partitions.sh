@@ -38,19 +38,19 @@ sfdisk --delete $FULL_DRIVE
 green "Creating partitions"
 echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always
 
-PART_EFI=
-PART_LINUX=
+export PART_EFI=
+export PART_LINUX=
 
 if [[ $FULL_DRIVE == *nvme* ]]; then
     green "Detected NVME"
-    PART_EFI="${FULL_DRIVE}p1"
-    PART_LINUX="${FULL_DRIVE}p2"
+    export PART_EFI="${FULL_DRIVE}p1"
+    export PART_LINUX="${FULL_DRIVE}p2"
 fi
 
 if [[ $FULL_DRIVE == */sd* ]]; then
     green "Detedted HDD"
-    PART_EFI="${FULL_DRIVE}1"
-    PART_LINUX="${FULL_DRIVE}2"
+    export PART_EFI="${FULL_DRIVE}1"
+    export PART_LINUX="${FULL_DRIVE}2"
 fi
 
 if [[ -z "$PART_EFI" ]]; then

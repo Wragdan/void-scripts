@@ -15,7 +15,8 @@ xbps-install -Sy -R https://repo-default.voidlinux.org/current -r /mnt base-syst
 # Not using xgenfstab since it maps using the mounting point instead of the disk uuid
 #xgenfstab /mnt > /mnt/etc/fstab
 
-green "starting"
+green "Copying void scripts to /mnt"
+cp -r ../void-scripts /mnt/tmp/void-scripts
 
 #green "Mounting virtual filesystem"
 #for dir in dev proc sys run; do mount --rbind /$dir /mnt/$dir; mount --make-rslave /mnt/$dir; done
@@ -24,6 +25,8 @@ green "starting"
 #green "Starting chroot"
 #BTRFS_OPTS=$BTRFS_OPTS PS1='(chroot) # ' chroot /mnt/ /bin/bash
 
+green "After chroot starts, run /tmp/void-scripts/system.sh"
+
 # prefer xchroot
 green "Starting chroot"
-BTRFS_OPTS=$BTRFS_OPTS xchroot /mnt
+BTRFS_OPTS=$BTRFS_OPTS PART_EFI=$PART_EFI PART_LINUX=$PART_LINUX xchroot /mnt
