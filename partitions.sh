@@ -19,4 +19,4 @@ sfdisk --delete $DRIVE
 # Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
 echo "Creating partitions"
 echo "..."
-echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $DRIVE
+echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $DRIVE -W always
