@@ -30,13 +30,13 @@ green "Change default shell to bash for root"
 chsh -s /bin/bash root
 
 green "Sync repositories"
-xbps-install -S
+xbps-install -Sy
 
 green "Add nonfree and multilib repositories"
 xbps-install void-repo-nonfree
-xbps-install -S
+xbps-install -Sy
 xbps-install void-repo-multilib
-xbps-install -S
+xbps-install -Sy
 
 EFI_UUID=$(blkid -s UUID -o value $PART_EFI)
 ROOT_UUID=$(blkid -s UUID -o value /dev/mapper/cryptvoid)
