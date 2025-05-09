@@ -38,19 +38,19 @@ sfdisk --delete $FULL_DRIVE
 green "Creating partitions"
 echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always
 
-export PART_EFI=
-export PART_LINUX=
+PART_EFI=
+PART_LINUX=
 
 if [[ $FULL_DRIVE == *nvme* ]]; then
     green "Detected NVME"
-    export PART_EFI="${FULL_DRIVE}p1"
-    export PART_LINUX="${FULL_DRIVE}p2"
+    PART_EFI="${FULL_DRIVE}p1"
+    PART_LINUX="${FULL_DRIVE}p2"
 fi
 
 if [[ $FULL_DRIVE == */sd* ]]; then
     green "Detedted HDD"
-    export PART_EFI="${FULL_DRIVE}1"
-    export PART_LINUX="${FULL_DRIVE}2"
+    PART_EFI="${FULL_DRIVE}1"
+    PART_LINUX="${FULL_DRIVE}2"
 fi
 
 if [[ -z "$PART_EFI" ]]; then
@@ -58,6 +58,8 @@ if [[ -z "$PART_EFI" ]]; then
     exit 1
 fi
 
+echo "export PART_EFI=$PART_EFI" >> env.bash
+echo "export PART_LINUX=$PART_LINUX" >> env.bash
 
 green "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
@@ -72,6 +74,8 @@ mkfs.btrfs -L Void /dev/mapper/cryptvoid
 
 # Mounting root drive
 BTRFS_OPTS="rw,noatime,compress=zstd,discard=async"
+echo "export BTRFS_OPTS=$BTRFS_OPTS" >> env.bash
+
 green "Mounting root partition to '/mnt'"
 mount -o $BTRFS_OPTS /dev/mapper/cryptvoid /mnt
 
