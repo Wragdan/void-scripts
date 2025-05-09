@@ -33,9 +33,9 @@ green "Sync repositories"
 xbps-install -Sy
 
 green "Add nonfree and multilib repositories"
-xbps-install void-repo-nonfree
+xbps-install -y void-repo-nonfree
 xbps-install -Sy
-xbps-install void-repo-multilib
+xbps-install -y void-repo-multilib
 xbps-install -Sy
 
 EFI_UUID=$(blkid -s UUID -o value $PART_EFI)
