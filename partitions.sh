@@ -97,3 +97,7 @@ btrfs su cr /mnt/srv
 
 green "Mounting EFI Partition"
 mount -o rw,noatime $PART_EFI /mnt/boot/efi
+
+green "All disks configured correctly."
+green "Run ./pre_chroot.sh to continue the installation process"
+
