@@ -88,3 +88,9 @@ EOF
 
 green "Installing bootloader onto disk"
 grub-install $FULL_DRIVE
+
+green "Ensure an initramfs is generated"
+xbps-reconfigure -fa
+
+green "All green, exiting... After exit please reboot your computer"
+exit
