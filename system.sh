@@ -72,6 +72,7 @@ cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
 
 green "Configuring luks key"
 dd bs=1 count=64 if=/dev/urandom of=/boot/volume.key
+green "Please anter your crypt passphrase"
 cryptsetup luksAddKey $PART_LINUX /boot/volume.key
 chmod 000 /boot/volume.key
 chmod -R g-rwx,o-rwx /boot
@@ -89,7 +90,7 @@ EOF
 green "Do you need --removable flag for grub? Type 'yes' if you need grub to be removable"
 read ANSWER
 
-if [[ "$ANSWER" != "yes" ]]; then
+if [[ "$ANSWER" == "yes" ]]; then
     green "Installing bootloader with --removable"
     grub-install $FULL_DRIVE --removable
     exit 0
