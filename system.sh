@@ -48,12 +48,12 @@ LUKS_UUID=$(blkid -s UUID -o value $PART_LINUX)
 
 green "Generating fstab"
 cat <<EOF > /etc/fstab
-# <file system>   <dir>         <type>    <options>                     <dump> <pass>
-UUID=$ROOT_UUID   /             btrfs     $BTRFS_OPTS,subvol=@          0 1
-UUID=$ROOT_UUID   /home         btrfs     $BTRFS_OPTS,subvol=@home      0 2
-UUID=$ROOT_UUID   /.snapshots   btrfs     $BTRFS_OPTS,subvol=@snapshots 0 2
-UUID=$EFI_UUID    /boot/efi     vfat      defaults,noatime              0 2
-tmpfs             /tmp          tmpfs     defaults,nosuid,nodev         0 0
+# <file system>                           <dir>         <type>    <options>                     <dump> <pass>
+UUID=$ROOT_UUID                           /             btrfs     $BTRFS_OPTS,subvol=@          0 1
+UUID=$ROOT_UUID                           /home         btrfs     $BTRFS_OPTS,subvol=@home      0 2
+UUID=$ROOT_UUID                           /.snapshots   btrfs     $BTRFS_OPTS,subvol=@snapshots 0 2
+UUID=$EFI_UUID                            /boot/efi     vfat      defaults,noatime              0 2
+tmpfs                                     /tmp          tmpfs     defaults,nosuid,nodev         0 0
 EOF
 
 if ! grep -q "GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub; then

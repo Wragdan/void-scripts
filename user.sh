@@ -27,3 +27,62 @@ green "Building and Installing 'neovim' - from source"
 ./xbps-src pkg neovim
 xi -fy neovim
 ./xbps-src clean
+
+green "Building and Installing 'xorg-minimal' - from source"
+./xbps-src pkg xorg-minimal
+xi -fy xorg-minimal
+./xbps-src clean
+
+green "Building and Installing 'dwm' - the best window manager"
+./xbps-src pkg dwm
+xi -fy dwm
+./xbps-src clean
+
+green "Building and Installing 'st' - the best terminal emulator"
+./xbps-src pkg st
+xi -fy st
+./xbps-src clean
+
+green "Building and Installing 'zsh' - my preferred terminal"
+./xbps-src pkg zsh
+xi -fy zsh
+./xbps-src clean
+
+green "Building and Installing feh"
+./xbps-src pkg feh
+xi -fy feh
+./xbps-src clean
+
+green "Building and Installing xrandr"
+./xbps-src pkg xrandr
+xi -fy xrandr
+./xbps-src clean
+
+green "Building and Installing picom"
+./xbps-src pkg picom
+xi -fy picom
+./xbps-src clean
+
+green "Building and Installing dunst"
+./xbps-src pkg dunst
+xi -fy dunst
+./xbps-src clean
+
+green "Building and Installing pipewire"
+./xbps-src pkg pipewire
+xi -fy pipewire
+./xbps-src clean
+
+green "Building and Installing wireplumber"
+./xbps-src pkg wireplumber
+xi -fy wireplumber
+./xbps-src clean
+
+green "Building and Installing pipewire-pulse"
+./xbps-src pkg pipewire-pulse
+xi -fy pipewire-pulse
+./xbps-src clean
+
+git clone https://github.com/Wragdan/dotfiles /home/wragdan/.dotfiles
+cd /home/wragdan/.dotfiles
+
