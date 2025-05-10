@@ -107,3 +107,8 @@ green "Building and Installing yazi"
 ./xbps-src pkg yazi 
 xi -fy yazi 
 ./xbps-src clean
+
+green "Building and Installing zathura"
+./xbps-src pkg zathura 
+xi -fy zathura 
+./xbps-src clean
