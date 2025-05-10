@@ -43,6 +43,11 @@ green "Building and Installing 'st' - the best terminal emulator"
 xi -fy st
 ./xbps-src clean
 
+green "Building and Installing dmenu"
+./xbps-src pkg dmenu
+xi -fy dmenu
+./xbps-src clean
+
 green "Building and Installing 'zsh' - my preferred terminal"
 ./xbps-src pkg zsh
 xi -fy zsh
@@ -77,12 +82,4 @@ green "Building and Installing wireplumber"
 ./xbps-src pkg wireplumber
 xi -fy wireplumber
 ./xbps-src clean
-
-green "Building and Installing pipewire-pulse"
-./xbps-src pkg pipewire-pulse
-xi -fy pipewire-pulse
-./xbps-src clean
-
-git clone https://github.com/Wragdan/dotfiles /home/wragdan/.dotfiles
-cd /home/wragdan/.dotfiles
 
