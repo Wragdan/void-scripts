@@ -15,15 +15,15 @@ green "Bootstrapping xbps-src"
 
 green "Building and Installing 'stow' - for dotfiles symlinking"
 ./xbps-src pkg stow
-xi -f stow
+xi -fy stow
 ./xbps-src clean
 
 green "Building and Installing 'git' - from source"
 ./xbps-src pkg git
-xi -f git
+xi -fy git
 ./xbps-src clean
 
 green "Building and Installing 'neovim' - from source"
 ./xbps-src pkg neovim
-xi -f neovim
+xi -fy neovim
 ./xbps-src clean
