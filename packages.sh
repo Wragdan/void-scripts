@@ -93,3 +93,7 @@ green "Building and Installing zoxide"
 xi -fy zoxide 
 ./xbps-src clean
 
+green "Building and Installing dbus"
+./xbps-src pkg dbus 
+xi -fy dbus 
+./xbps-src clean
