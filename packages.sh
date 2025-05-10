@@ -83,3 +83,13 @@ green "Building and Installing wireplumber"
 xi -fy wireplumber
 ./xbps-src clean
 
+green "Building and Installing sxhkd"
+./xbps-src pkg sxhkd 
+xi -fy sxhkd 
+./xbps-src clean
+
+green "Building and Installing zoxide"
+./xbps-src pkg zoxide 
+xi -fy zoxide 
+./xbps-src clean
+
