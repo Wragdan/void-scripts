@@ -86,8 +86,17 @@ cat <<EOF >> /etc/dracut.conf.d/10-crypt.conf
 install_items+=" /boot/volume.key /etc/crypttab "
 EOF
 
-green "Installing bootloader onto disk"
-grub-install $FULL_DRIVE --removable #my pc needs this
+green "Do you need --removable flag for grub? Type 'yes' if you need grub to be removable"
+read ANSWER
+
+if [[ "$ANSWER" != "yes" ]]; then
+    green "Installing bootloader with --removable"
+    grub-install $FULL_DRIVE --removable
+    exit 0
+else
+    green "Installing bootloader"
+    grub-install $FULL_DRIVE
+fi
 
 green "Ensure an initramfs is generated"
 xbps-reconfigure -fa
