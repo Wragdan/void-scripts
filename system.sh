@@ -106,6 +106,10 @@ fi
 green "Installing necessary packages to continue installation on reboot"
 xbps-install -Sy git xtools
 
+green "Enabling necessary services"
+ln -s /etc/sv/dhcpcd-eth0 /var/service
+ln -s /etc/sv/dhcpcd /var/service
+
 green "Ensure an initramfs is generated"
 xbps-reconfigure -fa
 
