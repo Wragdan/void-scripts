@@ -97,3 +97,13 @@ green "Building and Installing dbus"
 ./xbps-src pkg dbus 
 xi -fy dbus 
 ./xbps-src clean
+
+green "Building and Installing starship"
+./xbps-src pkg starship 
+xi -fy starship 
+./xbps-src clean
+
+green "Building and Installing yazi"
+./xbps-src pkg yazi 
+xi -fy yazi 
+./xbps-src clean
