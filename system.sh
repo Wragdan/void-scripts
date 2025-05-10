@@ -113,5 +113,8 @@ ln -s /etc/sv/dhcpcd /var/service
 green "Ensure an initramfs is generated"
 xbps-reconfigure -fa
 
+green "Copying void-scripts to user 'wragdan'"
+cp -r /tmp/void-scripts /home/wragdan/void-scripts
+
 green "All green, exiting... After exit please reboot your computer"
 exit
