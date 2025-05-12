@@ -16,7 +16,7 @@ ln -sf /usr/share/zoneinfo/America/Tegucigalpa /etc/localtime
 
 green "Setting locale to en_US.UTF-8"
 cp /etc/default/libc-locales /etc/default/libc-locales.backup
-sed -i 's/^\#en_US.UTF-8/en_US.UTF-8' /etc/default/libc-locales
+sed -i 's/^\#en_US.UTF-8/en_US.UTF-8/' /etc/default/libc-locales
 xbps-reconfigure -f glibc-locales
 
 green "Changing root password"
