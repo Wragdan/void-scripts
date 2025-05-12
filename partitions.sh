@@ -37,7 +37,7 @@ fi
 
 # Deletes all partitions on $DRIVE
 green "Deleting all partitions on disk"
-sfdisk --delete $FULL_DRIVE
+sfdisk --delete $FULL_DRIVE -W always
 
 # Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
 green "Creating partitions"
