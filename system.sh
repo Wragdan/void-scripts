@@ -87,7 +87,7 @@ cp /etc/default/grub /etc/default/grub.backup
 #NEWLINE='GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 rd.auto=1 rd.luks.allow-discards"'
 
 green "Changing GRUB_CMDLINE_LINUX_DEFAULT"
-sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 rd.auto=1 rd.luks.allow-discards"/' /etc/default/grub
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 rd.auto=1 rd.luks.allow-discards"/' /etc/default/grub
 green "Check results"
 cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
 
