@@ -112,3 +112,6 @@ green "Building and Installing zathura"
 ./xbps-src pkg zathura 
 xi -fy zathura 
 ./xbps-src clean
+
+green "Setting default shell for wragdan to zsh"
+chsh -s /usr/bin/zsh
