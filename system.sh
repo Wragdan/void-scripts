@@ -11,6 +11,14 @@ bold_red() { echo -e "\033[1;31m$*\033[0m"; }
 chown root:root /
 chmod 755 /
 
+green "Setting timezone to America/Tegucigalpa"
+ln -sf /usr/share/zoneinfo/America/Tegucigalpa /etc/localtime
+
+green "Setting locale to en_US.UTF-8"
+cp /etc/default/libc-locales /etc/default/libc-locales.backup
+sed -i 's/^\#en_US.UTF-8/en_US.UTF-8' /etc/default/libc-locales
+xbps-reconfigure -f glibc-locales
+
 green "Changing root password"
 passwd root
 
@@ -18,6 +26,15 @@ green "What would the hostname be?"
 read HOST_NAME
 
 echo $HOST_NAME > /etc/hostname
+
+cat <<EOF > /etc/hosts
+#
+# /etc/hosts: static lookup table for host names
+#
+127.0.0.1        localhost
+::1              localhost
+127.0.1.1        ${HOST_NAME}.localdomain ${HOST_NAME}
+EOF
 
 green "Creating user 'wragdan'"
 useradd wragdan
