@@ -28,9 +28,10 @@ green "Building and Installing 'neovim' - from source"
 xi -fy neovim
 ./xbps-src clean
 
-green "Building and Installing 'xorg-minimal' - from source"
-./xbps-src pkg xorg-minimal
-xi -fy xorg-minimal
+# TODO: install only necessary packages
+green "Building and Installing 'xorg' - from source"
+./xbps-src pkg xorg
+xi -fy xorg
 ./xbps-src clean
 
 green "Building and Installing 'dwm' - the best window manager"
@@ -113,5 +114,13 @@ green "Building and Installing zathura"
 xi -fy zathura 
 ./xbps-src clean
 
+green "Building and Installing eza"
+./xbps-src pkg eza 
+xi -fy eza 
+./xbps-src clean
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
+
+green "Creating DWM log directory"
+mkdir -p /home/wragdan/.logs/dwm
