@@ -139,6 +139,24 @@ green "Installing qutebrowser"
 xi -fy qutebrowser 
 ./xbps-src clean
 
+green "Installing zsh-syntax-highlighting"
+./xbps-src pkg zsh-syntax-highlighting 
+xi -fy zsh-syntax-highlighting 
+./xbps-src clean
+
+green "Installing zsh-autosuggestions"
+./xbps-src pkg zsh-autosuggestions
+xi -fy zsh-autosuggestions
+./xbps-src clean
+
+green "Installing rustup"
+./xbps-src pkg rustup
+xi -fy rustup
+./xbps-src clean
+
+#green "Installing Rustup"
+#curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 

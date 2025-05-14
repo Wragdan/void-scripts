@@ -22,3 +22,7 @@ stow nvim
 stow local
 
 touch /home/wragdan/.config/shell/secrets
+
+green "Configuring rust - Please select default installation"
+rustup-init
+
