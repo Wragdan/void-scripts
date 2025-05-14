@@ -35,13 +35,13 @@ xi -fy xorg
 ./xbps-src clean
 
 green "Building and Installing 'dwm' - the best window manager"
-./xbps-src pkg dwm
-xi -fy dwm
+./xbps-src pkg dwm-wragdan
+xi -fy dwm-wragdan
 ./xbps-src clean
 
 green "Building and Installing 'st' - the best terminal emulator"
-./xbps-src pkg st
-xi -fy st
+./xbps-src pkg st-wragdan
+xi -fy st-wragdan
 ./xbps-src clean
 
 green "Building and Installing dmenu"
@@ -152,6 +152,16 @@ xi -fy zsh-autosuggestions
 green "Installing rustup"
 ./xbps-src pkg rustup
 xi -fy rustup
+./xbps-src clean
+
+green "Installing fnm"
+./xbps-src pkg fnm
+xi -fy fnm
+./xbps-src clean
+
+green "Installing luarocks"
+./xbps-src pkg luarocks
+xi -fy luarocks
 ./xbps-src clean
 
 #green "Installing Rustup"

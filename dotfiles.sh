@@ -26,3 +26,5 @@ touch /home/wragdan/.config/shell/secrets
 green "Configuring rust - Please select default installation"
 rustup-init
 
+green "Installing node version 22"
+fnm install 22
