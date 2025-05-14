@@ -20,3 +20,5 @@ stow pipewire
 stow picom
 stow nvim
 stow local
+
+touch /home/wragdan/.config/shell/secrets

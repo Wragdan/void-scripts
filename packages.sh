@@ -119,8 +119,32 @@ green "Building and Installing eza"
 xi -fy eza 
 ./xbps-src clean
 
+green "Installing nvidia drivers"
+./xbps-src pkg nvidia 
+xi -fy nvidia 
+./xbps-src clean
+
+green "Installing fzf"
+./xbps-src pkg fzf 
+xi -fy fzf 
+./xbps-src clean
+
+#green "Installing fnm"
+#./xbps-src pkg fnm 
+#xi -fy fnm 
+#./xbps-src clean
+
+green "Installing qutebrowser"
+./xbps-src pkg qutebrowser 
+xi -fy qutebrowser 
+./xbps-src clean
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 
 green "Creating DWM log directory"
 mkdir -p /home/wragdan/.logs/dwm
+
+cat <<EOF > /etc/modprobe.d/nouveau_blacklist.conf
+blacklist nouveau
+EOF
