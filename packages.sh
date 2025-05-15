@@ -169,6 +169,11 @@ green "Installing ripgrep"
 xi -fy ripgrep
 ./xbps-src clean
 
+green "Installing gnupg"
+./xbps-src pkg gnupg
+xi -fy gnupg
+./xbps-src clean
+
 #green "Installing Rustup"
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -187,5 +192,4 @@ cat <<EOF > /etc/xbps.d/20-librewolf.conf
 repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 xbps-install -Su librewolf
-
 
