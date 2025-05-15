@@ -28,3 +28,9 @@ rustup-init
 
 green "Installing node version 22"
 fnm install 22
+
+mkdir -p /etc/udev/rules.d
+
+cat <<EOF > /etc/udev/rules.d/90-yubikey.rules
+ACTION=="add|change",SUBSYSTEM=="usb|hidraw", ATTRS={idvendor}=="1050", GROUP="wheel", MODE=0660
+EOF

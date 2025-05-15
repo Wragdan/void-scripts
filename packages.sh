@@ -164,6 +164,11 @@ green "Installing luarocks"
 xi -fy luarocks
 ./xbps-src clean
 
+green "Installing ripgrep"
+./xbps-src pkg ripgrep
+xi -fy ripgrep
+./xbps-src clean
+
 #green "Installing Rustup"
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -176,3 +181,11 @@ mkdir -p /home/wragdan/.logs/dwm
 cat <<EOF > /etc/modprobe.d/nouveau_blacklist.conf
 blacklist nouveau
 EOF
+
+green "Installing librewolf"
+cat <<EOF > /etc/xbps.d/20-librewolf.conf
+repository=https://github.com/index-0/librewolf-void/releases/latest/download/
+EOF
+xbps-install -Su librewolf
+
+
