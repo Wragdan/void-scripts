@@ -179,6 +179,16 @@ green "Installing xclip"
 xi -fy xclip
 ./xbps-src clean
 
+green "Installing cifs-utils"
+./xbps-src pkg cifs-utils 
+xi -fy cifs-utils 
+./xbps-src clean
+
+green "Installing dumb_runtime_dir"
+./xbps-src pkg dumb_runtime_dir 
+xi -fy dumb_runtime_dir 
+./xbps-src clean
+
 #green "Installing Rustup"
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -198,3 +208,8 @@ repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 xbps-install -Su librewolf
 
+green "Configuring dumb_runtime_dir"
+sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
+cat <<EOF > /etc/pam.d/system-login
+session		optional	pam_dumb_runtime_dir.so
+EOF
