@@ -174,6 +174,11 @@ green "Installing gnupg"
 xi -fy gnupg
 ./xbps-src clean
 
+green "Installing xclip"
+./xbps-src pkg xclip
+xi -fy xclip
+./xbps-src clean
+
 #green "Installing Rustup"
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
