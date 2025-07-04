@@ -192,6 +192,21 @@ xi -fy dumb_runtime_dir
 #green "Installing Rustup"
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+green "Building and Installing chrony"
+./xbps-src pkg chrony 
+xi -fy chrony 
+./xbps-src clean
+
+green "Building and Installing mpd"
+./xbps-src pkg mpd
+xi -fy mpd
+./xbps-src clean
+
+green "Building and Installing ncmpcpp"
+./xbps-src pkg ncmpcpp
+xi -fy ncmpcpp
+./xbps-src clean
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 
