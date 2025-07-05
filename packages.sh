@@ -207,6 +207,16 @@ green "Building and Installing ncmpcpp"
 xi -fy ncmpcpp
 ./xbps-src clean
 
+green "Building and Installing noto fonts"
+./xbps-src pkg noto-fonts-cjk
+xi -fy noto-fonts-cjk
+./xbps-src clean
+
+green "Building and Installing noto fonts emoji"
+./xbps-src pkg noto-fonts-emoji
+xi -fy noto-fonts-emoji
+./xbps-src clean
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 

@@ -20,6 +20,9 @@ stow pipewire
 stow picom
 stow nvim
 stow local
+stow mpd
+stow ncmpcpp
+stow fontconfig
 
 touch /home/wragdan/.config/shell/secrets
 
