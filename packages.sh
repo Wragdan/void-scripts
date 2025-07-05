@@ -217,6 +217,11 @@ green "Building and Installing noto fonts emoji"
 xi -fy noto-fonts-emoji
 ./xbps-src clean
 
+green "Building and Installing ueberzugpp"
+./xbps-src pkg ueberzugpp 
+xi -fy ueberzugpp 
+./xbps-src clean
+
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 
