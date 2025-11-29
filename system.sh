@@ -123,16 +123,43 @@ fi
 green "Installing necessary packages to continue installation on reboot"
 xbps-install -Sy git xtools
 
-green "Enabling necessary services"
-ln -s /etc/sv/dhcpcd-eth0 /var/service
-ln -s /etc/sv/dhcpcd /var/service
-
 green "Ensure an initramfs is generated"
 xbps-reconfigure -fa
 
 green "Copying void-scripts to user 'wragdan'"
 cp -r /tmp/void-scripts /home/wragdan/void-scripts
 chown -R wragdan:wragdan /home/wragdan/void-scripts
+
+green "Configuring yubikey support"
+mkdir -p /etc/udev/rules.d
+cat <<EOF > /etc/udev/rules.d/90-yubikey.rules
+ACTION=="add|change",SUBSYSTEM=="usb|hidraw", ATTRS={idvendor}=="1050", GROUP="wheel", MODE=0660
+EOF
+
+green "nouveau blacklist"
+cat <<EOF > /etc/modprobe.d/nouveau_blacklist.conf
+blacklist nouveau
+EOF
+
+green "Installing librewolf"
+cat <<EOF > /etc/xbps.d/20-librewolf.conf
+repository=https://github.com/index-0/librewolf-void/releases/latest/download/
+EOF
+xbps-install -Su librewolf
+
+green "Installing ungoogled-chromium"
+cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
+repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
+EOF
+xbps-install -Su librewolf
+
+green "Configuring dumb_runtime_dir"
+sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
+cat <<EOF > /etc/pam.d/system-login
+session		optional	pam_dumb_runtime_dir.so
+EOF
+
+sudo xbps-install -S stow git neovim xorg dmenu zsh feh xrandr picom dunst pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
 green "All green, exiting... After exit please reboot your computer"
 exit

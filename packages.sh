@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 red() { echo -e "\033[31m$*\033[0m"; }
 green() { echo -e "\033[32m$*\033[0m"; }
 bold_red() { echo -e "\033[1;31m$*\033[0m"; }
@@ -9,8 +11,6 @@ git clone https://github.com/Wragdan/void-packages /home/wragdan/void-packages
 cd /home/wragdan/void-packages
 green "Checking out to branch wragdan"
 git checkout wragdan
-
-xbps-install -S stow git neovim xorg dmenu zsh feh xrandr picom dunst pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup fnm luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji ueberzugpp
 
 green "Bootstrapping xbps-src"
 ./xbps-src binary-bootstrap
@@ -156,10 +156,10 @@ xi -fy st-wragdan
 #xi -fy rustup
 #./xbps-src clean
 #
-#green "Installing fnm"
-#./xbps-src pkg fnm
-#xi -fy fnm
-#./xbps-src clean
+green "Installing fnm"
+./xbps-src pkg fnm
+xi -fy fnm
+./xbps-src clean
 #
 #green "Installing luarocks"
 #./xbps-src pkg luarocks
@@ -219,35 +219,14 @@ xi -fy st-wragdan
 #xi -fy noto-fonts-emoji
 #./xbps-src clean
 #
-#green "Building and Installing ueberzugpp"
-#./xbps-src pkg ueberzugpp 
-#xi -fy ueberzugpp 
-#./xbps-src clean
+
+green "Building and Installing ueberzugpp"
+./xbps-src pkg ueberzugpp 
+xi -fy ueberzugpp 
+./xbps-src clean
 
 green "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
 
 green "Creating DWM log directory"
 mkdir -p /home/wragdan/.logs/dwm
-
-cat <<EOF > /etc/modprobe.d/nouveau_blacklist.conf
-blacklist nouveau
-EOF
-
-green "Installing librewolf"
-cat <<EOF > /etc/xbps.d/20-librewolf.conf
-repository=https://github.com/index-0/librewolf-void/releases/latest/download/
-EOF
-xbps-install -Su librewolf
-
-green "Installing ungoogled-chromium"
-cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
-repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
-EOF
-xbps-install -Su librewolf
-
-green "Configuring dumb_runtime_dir"
-sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
-cat <<EOF > /etc/pam.d/system-login
-session		optional	pam_dumb_runtime_dir.so
-EOF
