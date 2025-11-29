@@ -159,7 +159,7 @@ cat <<EOF > /etc/pam.d/system-login
 session		optional	pam_dumb_runtime_dir.so
 EOF
 
-sudo xbps-install -S eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+sudo xbps-install -S sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
 green "All green, exiting... After exit please reboot your computer"
 exit
