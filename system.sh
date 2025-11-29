@@ -45,7 +45,7 @@ usermod -aG wheel,input,audio,video,scanner,network,storage wragdan
 
 green "Configuring sudoers"
 echo "%wheel ALL=(ALL:ALL) ALL" >/etc/sudoers.d/00-wheel-can-sudo
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot" > /etc/sudoers.d/01-cmds-without-password
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff" > /etc/sudoers.d/01-cmds-without-password
 
 green "Change default shell to bash for root"
 chsh -s /bin/bash root
