@@ -1,10 +1,6 @@
 #!/bin/bash
 
-set -e
-
-red() { echo -e "\033[31m$*\033[0m"; }
-green() { echo -e "\033[32m$*\033[0m"; }
-bold_red() { echo -e "\033[1;31m$*\033[0m"; }
+#set -e
 
 TITLE="Void Linux Installer"
 BACKTITLE="Partition Disks"
@@ -21,7 +17,6 @@ dialog --backtitle "$BACKTITLE" \
 echo "Deleting env file"
 rm -rf env.bash
 
-#dialog --msgbox "Unmounting partitions in case they are mounted" 1920 1080
 dialog --backtitle "$BACKTITLE" \
        --title "$TITLE" \
        --msgbox "Unmounting file systems..." 6 50
@@ -30,10 +25,6 @@ umount /mnt/.snapshots 2>/dev/null
 umount /mnt/home 2>/dev/null
 umount /mnt/boot/efi 2>/dev/null
 umount /mnt 2>/dev/null
-#umount /mnt/.snapshots
-#umount /mnt/home
-#umount /mnt/boot/efi
-#umount /mnt
 
 CRYPT_DEVICE="cryptvoid"
 CRYPT_STATUS=$(cryptsetup status "$CRYPT_DEVICE" 2>&1)
@@ -45,7 +36,6 @@ if [[ $CRYPT_STATUS != *inactive* ]]; then
            --title "Encryption Check" \
            --yesno "The encrypted device '$CRYPT_DEVICE' is currently open. Do you want to close it?" 8 60
     
-    # Capture the exit status of the dialog (0 for Yes, 1 for No/Cancel)
     response=$?
 
     if [ $response -eq 0 ]; then
@@ -61,21 +51,12 @@ if [[ $CRYPT_STATUS != *inactive* ]]; then
     fi
 fi
 
-## Check if crypt is already open. Useful for development of the script
-#CRYPT_OPEN=$(cryptsetup status cryptvoid)
-#if [[ $CRYPT_OPEN != *inactive* ]]; then
-#    red "Crypt is open, closing..."
-#    cryptsetup close cryptvoid
-#fi
-
 DRIVE=""
 while true; do
-    # Dialog to ask for the drive name
     DRIVE_INPUT=$(dialog --backtitle "$BACKTITLE" \
                          --title "Drive Selection" \
                          --inputbox "Enter the target drive (e.g., nvme0n1, sda, sdb) without '/dev/'." 10 60 3>&1 1>&2 2>&3)
     
-    # Check if the user pressed Cancel or provided empty input
     if [ $? -ne 0 ] || [ -z "$DRIVE_INPUT" ]; then
         dialog --backtitle "$BACKTITLE" \
                --title "ERROR" \
@@ -86,36 +67,53 @@ while true; do
         continue
     fi
 
-    # Set the DRIVE variable and break the loop
     DRIVE="$DRIVE_INPUT"
     break
 done
 
-# 5. Final Confirmation (Optional but recommended)
 dialog --backtitle "$BACKTITLE" \
        --title "Confirmation" \
        --msgbox "Installation will proceed on drive: /dev/$DRIVE. Press OK to continue." 8 60
 
 echo "Using drive: /dev/$DRIVE"
+FULL_DRIVE="/dev/$DRIVE"
+echo "export FULL_DRIVE=$FULL_DRIVE" >> env.bash
 
-#echo "Enter drive to use for installation without the '/dev/'. Ex. nvme0n1, sda, sdb, etc..."
-#read DRIVE
+dialog --backtitle "$BACKTITLE" \
+       --title "$TITLE" \
+       --msgbox "!!! WARNING !!!\n\nThis next step will irrevocably **ERASE ALL DATA** and **DELETE ALL PARTITIONS** on the drive: **$FULL_DRIVE**.\n\nPress OK to proceed to the confirmation." 12 70
 
-#FULL_DRIVE="/dev/$DRIVE"
-#echo "export FULL_DRIVE=$FULL_DRIVE" >> env.bash
-#
-#red "WARNING!!! This script will delete all partitions, write 'yes' to continue"
-#read ANSWER
-#
-#if [[ "$ANSWER" != "yes" ]]; then
-#    bold_red "You decided to cancel"
-#    exit 0
-#fi
-#
-## Deletes all partitions on $DRIVE
-#green "Deleting all partitions on disk"
-#sfdisk --delete $FULL_DRIVE -W always
-#
+ANSWER=$(dialog --backtitle "$BACKTITLE" \
+                --title "$TITLE - CONFIRM DELETION" \
+                --inputbox "To continue and delete all data on $FULL_DRIVE, type **yes** below:" 10 60 2>&1 >/dev/tty)
+
+# Check if the user pressed Cancel or provided empty input
+if [ $? -ne 0 ]; then
+    # User pressed Cancel/Escape
+    ANSWER=""
+fi
+
+if [[ "$ANSWER" == "yes" ]]; then
+    break
+else
+    dialog --backtitle "$BACKTITLE" \
+           --title "Action Canceled" \
+           --msgbox "You decided to cancel the operation.\nExiting the installer." 8 50
+    echo "You decided to cancel"
+    exit 0 # Exit the script
+fi
+
+dialog --backtitle "$BACKTITLE" \
+       --title "Partitioning" \
+       --msgbox "Deleting all partitions on $FULL_DRIVE..." 8 60
+
+echo "Deleting all partitions on disk"
+sfdisk --delete "$FULL_DRIVE" -W always
+
+dialog --backtitle "$BACKTITLE" \
+       --title "Partitioning" \
+       --msgbox "All partitions on $FULL_DRIVE have been successfully deleted. Proceeding to create new partitions." 8 60
+
 ## Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
 #green "Creating partitions"
 #echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always
