@@ -102,6 +102,7 @@ fi
 
     if [[ -z "$PART_EFI" ]]; then
         echo "Could not detect efi partition. aborting..."
+        sleep 3
         exit 1
     fi
 
@@ -114,42 +115,53 @@ echo "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
 cryptsetup luksOpen $PART_LINUX $CRYPT_DEVICE
 
-#green "Formatting partitions"
-#green "Formatting EFI partition"
-#mkfs.fat -F32 -n EFI $PART_EFI
-#green "Formatting root partition"
-#mkfs.btrfs -L Void /dev/mapper/cryptvoid
-#
-## Mounting root drive
-#BTRFS_OPTS="rw,noatime,compress=zstd,discard=async"
-#echo "export BTRFS_OPTS=$BTRFS_OPTS" >> env.bash
-#
-#green "Mounting root partition to '/mnt'"
-#mount -o $BTRFS_OPTS /dev/mapper/cryptvoid /mnt
-#
-#green "Creating SubVolumes"
-#btrfs subvolume create /mnt/@
-#btrfs subvolume create /mnt/@home
-#btrfs subvolume create /mnt/@snapshots
-#umount /mnt
-#
-#green "Mounting Subvolumes"
-#mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/cryptvoid /mnt
-#mkdir /mnt/{boot,home,.snapshots}
-#mkdir /mnt/boot/efi
-#mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/cryptvoid /mnt/home
-#mount -o $BTRFS_OPTS,subvol=@snapshots /dev/mapper/cryptvoid /mnt/.snapshots
-#
-## Directories we do not want to snapshot
-#green "Creating ignored subvolumes"
-#mkdir -p /mnt/var/cache
-#btrfs su cr /mnt/var/cache/xbps
-#btrfs su cr /mnt/var/tmp
-#btrfs su cr /mnt/srv
-#
-#green "Mounting EFI Partition"
-#mount -o rw,noatime $PART_EFI /mnt/boot/efi
-#
-#green "All disks configured correctly."
-#green "Run ./pre_chroot.sh to continue the installation process"
+(
+    echo "Starting formatting partitions"
+    echo "Formatting EFI partition"
+    mkfs.fat -F32 -n EFI $PART_EFI
+    sleep 1
+    echo "Formatting root partition"
+    mkfs.btrfs -L Void /dev/mapper/cryptvoid
+    sleep 1
+
+    # Mounting root drive
+    BTRFS_OPTS="rw,noatime,compress=zstd,discard=async"
+    echo "export BTRFS_OPTS=$BTRFS_OPTS" >> env.bash
+
+    echo "Mounting root partition to '/mnt'"
+    mount -o $BTRFS_OPTS /dev/mapper/cryptvoid /mnt
+    sleep 1
+
+    echo "Creating SubVolumes"
+    btrfs subvolume create /mnt/@
+    btrfs subvolume create /mnt/@home
+    btrfs subvolume create /mnt/@snapshots
+    umount /mnt
+    sleep 1
+
+    echo "Mounting Subvolumes"
+    mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/cryptvoid /mnt
+    mkdir /mnt/{boot,home,.snapshots}
+    mkdir /mnt/boot/efi
+    mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/cryptvoid /mnt/home
+    mount -o $BTRFS_OPTS,subvol=@snapshots /dev/mapper/cryptvoid /mnt/.snapshots
+    sleep 1
+
+    # Directories we do not want to snapshot
+    echo "Creating ignored subvolumes"
+    mkdir -p /mnt/var/cache
+    btrfs su cr /mnt/var/cache/xbps
+    btrfs su cr /mnt/var/tmp
+    btrfs su cr /mnt/srv
+    sleep 1
+
+    echo "Mounting EFI Partition"
+    mount -o rw,noatime $PART_EFI /mnt/boot/efi
+    sleep 1
+
+    echo "All disks configured correctly."
+    echo "Run ./pre_chroot.sh to continue the installation process"
+    sleep 5
+) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
+
 
