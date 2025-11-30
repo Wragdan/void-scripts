@@ -158,10 +158,10 @@ cryptsetup luksOpen $PART_LINUX $CRYPT_DEVICE
     echo "Mounting EFI Partition"
     mount -o rw,noatime $PART_EFI /mnt/boot/efi
     sleep 1
-
-    echo "All disks configured correctly."
-    echo "Run ./pre_chroot.sh to continue the installation process"
-    sleep 5
 ) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
 
+
+dialog --backtitle "$BACKTITLE" \
+       --title "All disks partitioned" \
+       --msgbox "Run ./pre_chroot.sh to continue the installation process" 8 50
 
