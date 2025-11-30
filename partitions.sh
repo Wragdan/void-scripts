@@ -9,39 +9,29 @@ if ! command -v dialog &> /dev/null; then
     exit 1
 fi
 
-echo "Deleting env file"
-rm -rf env.bash
-
-echo "Unmounting partitions..."
-umount /mnt/.snapshots 2>/dev/null
-umount /mnt/home 2>/dev/null
-umount /mnt/boot/efi 2>/dev/null
-umount /mnt 2>/dev/null
-
 CRYPT_DEVICE="cryptvoid"
 CRYPT_STATUS=$(cryptsetup status "$CRYPT_DEVICE" 2>&1)
 
-if [[ $CRYPT_STATUS != *inactive* ]]; then
-    
-    # Dialog to confirm closing the open crypt device
-    dialog --backtitle "$BACKTITLE" \
-           --title "Encryption Check" \
-           --yesno "The encrypted device '$CRYPT_DEVICE' is currently open. Do you want to close it?" 8 60
-    
-    response=$?
 
-    if [ $response -eq 0 ]; then
-        dialog --backtitle "$BACKTITLE" \
-               --title "Action" \
-               --msgbox "Closing crypt device: $CRYPT_DEVICE" 6 50
-        echo "Crypt is open, closing..."
-        cryptsetup close "$CRYPT_DEVICE"
-    else
-        dialog --backtitle "$BACKTITLE" \
-               --title "Action" \
-               --msgbox "Crypt device was left open. This may cause issues later." 8 50
+(
+    echo "Deleting env.bash"
+    rm -rf env.bash
+
+    echo "Unmounting /mnt/.snapshots"
+    umount /mnt/.snapshots 2>/dev/null
+    echo "Unmounting /mnt/home"
+    umount /mnt/home 2>/dev/null
+    echo "Unmounting /mnt/boot/efi"
+    umount /mnt/boot/efi 2>/dev/null
+    echo "Unmounting /mnt"
+    umount /mnt 2>/dev/null
+
+    if [[ $CRYPT_STATUS != *inactive* ]]; then
+      echo "Closing crypt device"
+      cryptsetup close "$CRYPT_DEVICE"
     fi
-fi
+) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
+
 
 DRIVE=""
 while true; do
