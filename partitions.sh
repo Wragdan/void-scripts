@@ -102,15 +102,15 @@ else
 fi
 
 
-PART_EFI=""
-PART_LINUX=""
-
 (
     echo "Deleting all partitions on $FULL_DRIVE..."
     sfdisk --delete "$FULL_DRIVE" -W always 2>/dev/null
     echo "Partitions deleted. Creating new partitions..."
     # Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
     echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always 2>/dev/null
+
+    PART_EFI=""
+    PART_LINUX=""
 
     if [[ $FULL_DRIVE == *nvme* ]]; then
         echo "Detected NVME"
@@ -133,6 +133,7 @@ PART_LINUX=""
     echo "export PART_LINUX=$PART_LINUX" >> env.bash
 ) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
 
+source env.bash
 echo "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
 cryptsetup luksOpen $PART_LINUX cryptvoid
