@@ -104,10 +104,10 @@ fi
 
 (
     echo "Deleting all partitions on $FULL_DRIVE..."
-    sfdisk --delete "$FULL_DRIVE" -W always 2>/dev/null
+    sfdisk --delete "$FULL_DRIVE" -W always > /dev/null 2>&1
     echo "Partitions deleted. Creating new partitions..."
     # Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
-    echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always 2>/dev/null
+    echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always > /dev/null 2>&1
 
     PART_EFI=""
     PART_LINUX=""
