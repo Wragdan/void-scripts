@@ -30,7 +30,7 @@ CRYPT_STATUS=$(cryptsetup status "$CRYPT_DEVICE" 2>&1)
       echo "Closing crypt device"
       cryptsetup close "$CRYPT_DEVICE"
     fi
-    sleep 5
+    sleep 2
 ) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
 
 
