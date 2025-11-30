@@ -114,7 +114,6 @@ read ANSWER
 if [[ "$ANSWER" == "yes" ]]; then
     green "Installing bootloader with --removable"
     grub-install $FULL_DRIVE --removable
-    exit 0
 else
     green "Installing bootloader"
     grub-install $FULL_DRIVE
