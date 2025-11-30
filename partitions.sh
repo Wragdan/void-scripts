@@ -9,16 +9,9 @@ if ! command -v dialog &> /dev/null; then
     exit 1
 fi
 
-dialog --backtitle "$BACKTITLE" \
-       --title "Initial cleanup" \
-       --msgbox "Starting cleanup. Deleting 'env.bash' file." 6 50
-
 echo "Deleting env file"
 rm -rf env.bash
 
-dialog --backtitle "$BACKTITLE" \
-       --title "Initial cleanup" \
-       --msgbox "Unmounting file systems..." 6 50
 echo "Unmounting partitions..."
 umount /mnt/.snapshots 2>/dev/null
 umount /mnt/home 2>/dev/null
@@ -70,21 +63,13 @@ while true; do
     break
 done
 
-dialog --backtitle "$BACKTITLE" \
-       --title "Confirmation" \
-       --msgbox "Installation will proceed on drive: /dev/$DRIVE. Press OK to continue." 8 60
-
 echo "Using drive: /dev/$DRIVE"
 FULL_DRIVE="/dev/$DRIVE"
 echo "export FULL_DRIVE=$FULL_DRIVE" >> env.bash
 
-dialog --backtitle "$BACKTITLE" \
-       --title "WARNING" \
-       --msgbox "!!! WARNING !!!\n\nThis next step will irrevocably **ERASE ALL DATA** and **DELETE ALL PARTITIONS** on the drive: **$FULL_DRIVE**.\n\nPress OK to proceed to the confirmation." 12 70
-
 ANSWER=$(dialog --backtitle "$BACKTITLE" \
                 --title "CONFIRM DELETION" \
-                --inputbox "To continue and delete all data on $FULL_DRIVE, type **yes** below:" 10 60 2>&1 >/dev/tty)
+                --inputbox "To continue and delete all data on $FULL_DRIVE, type 'yes' below:" 10 60 2>&1 >/dev/tty)
 
 # Check if the user pressed Cancel or provided empty input
 if [ $? -ne 0 ]; then
@@ -136,7 +121,7 @@ fi
 source env.bash
 echo "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
-cryptsetup luksOpen $PART_LINUX cryptvoid
+cryptsetup luksOpen $PART_LINUX $CRYPT_DEVICE
 
 #green "Formatting partitions"
 #green "Formatting EFI partition"
