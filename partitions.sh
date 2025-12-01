@@ -9,6 +9,11 @@ if ! command -v dialog &> /dev/null; then
     exit 1
 fi
 
+if ! command -v cryptsetup &> /dev/null; then
+  echo "Error: 'cryptsetup' command not found. Please install it"
+  exit 1
+fi
+
 CRYPT_DEVICE="cryptvoid"
 CRYPT_STATUS=$(cryptsetup status "$CRYPT_DEVICE" 2>&1)
 
