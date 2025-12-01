@@ -46,18 +46,12 @@ echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/
 echo "Change default shell to bash for root"
 chsh -s /bin/bash root
 
-echo "Sync repositories"
-xbps-install -Sy
-
 echo "Add nonfree and multilib repositories"
-xbps-install -y void-repo-nonfree
-xbps-install -Sy
-xbps-install -y void-repo-multilib
-xbps-install -Sy
+xbps-install -Syu void-repo-nonfree void-repo-multilib
 
-EFI_UUID=$(blkid -s UUID -o value $PART_EFI)
+EFI_UUID=$(blkid -s UUID -o value "$PART_EFI")
 ROOT_UUID=$(blkid -s UUID -o value /dev/mapper/cryptvoid)
-LUKS_UUID=$(blkid -s UUID -o value $PART_LINUX)
+LUKS_UUID=$(blkid -s UUID -o value "$PART_LINUX")
 
 echo "Generating fstab"
 cat <<EOF > /etc/fstab
@@ -90,7 +84,7 @@ cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
 echo "Configuring luks key"
 dd bs=1 count=64 if=/dev/urandom of=/boot/volume.key
 echo "Please anter your crypt passphrase"
-cryptsetup luksAddKey $PART_LINUX /boot/volume.key
+cryptsetup luksAddKey "$PART_LINUX" /boot/volume.key
 chmod 000 /boot/volume.key
 chmod -R g-rwx,o-rwx /boot
 
@@ -116,7 +110,7 @@ else
 fi
 
 echo "Installing necessary packages to continue installation on reboot"
-xbps-install -Sy git xtools
+xbps-install -Syu git xtools
 
 echo "Ensure an initramfs is generated"
 xbps-reconfigure -fa
@@ -140,13 +134,13 @@ echo "Installing librewolf"
 cat <<EOF > /etc/xbps.d/20-librewolf.conf
 repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
-xbps-install -Su librewolf
+xbps-install -Syu librewolf
 
 echo "Installing ungoogled-chromium"
 cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
 repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
 EOF
-xbps-install -Su librewolf
+xbps-install -Syu librewolf
 
 echo "Configuring dumb_runtime_dir"
 sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
