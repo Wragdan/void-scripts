@@ -83,7 +83,7 @@ fi
     sfdisk --delete "$FULL_DRIVE" -W always > /dev/null 2>&1
     echo "Partitions deleted. Creating new partitions..."
     # Creates 2 partitions, EFI 256M and Linux for the remaining of the disk
-    echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk $FULL_DRIVE -W always > /dev/null 2>&1
+    echo -e 'size=256M, type=U\n size=+, type=L\n' | sfdisk "$FULL_DRIVE" -W always > /dev/null 2>&1
 
     PART_EFI=""
     PART_LINUX=""
@@ -113,15 +113,15 @@ fi
 source env.bash
 echo "Encrypting Linux partition"
 cryptsetup luksFormat --type luks1 -y $PART_LINUX
-cryptsetup luksOpen $PART_LINUX $CRYPT_DEVICE
+cryptsetup luksOpen "$PART_LINUX" $CRYPT_DEVICE
 
 (
     echo "Starting formatting partitions"
     echo "Formatting EFI partition"
-    mkfs.fat -F32 -n EFI $PART_EFI
+    mkfs.fat -F32 -n EFI "$PART_EFI" > /dev/null 2>&1
     sleep 1
     echo "Formatting root partition"
-    mkfs.btrfs -L Void /dev/mapper/cryptvoid
+    mkfs.btrfs -L Void /dev/mapper/cryptvoid > /dev/null 2>&1
     sleep 1
 
     # Mounting root drive
@@ -129,34 +129,34 @@ cryptsetup luksOpen $PART_LINUX $CRYPT_DEVICE
     echo "export BTRFS_OPTS=$BTRFS_OPTS" >> env.bash
 
     echo "Mounting root partition to '/mnt'"
-    mount -o $BTRFS_OPTS /dev/mapper/cryptvoid /mnt
+    mount -o $BTRFS_OPTS /dev/mapper/cryptvoid /mnt > /dev/null 2>&1
     sleep 1
 
     echo "Creating SubVolumes"
-    btrfs subvolume create /mnt/@
-    btrfs subvolume create /mnt/@home
-    btrfs subvolume create /mnt/@snapshots
+    btrfs subvolume create /mnt/@ > /dev/null 2>&1
+    btrfs subvolume create /mnt/@home > /dev/null 2>&1
+    btrfs subvolume create /mnt/@snapshots > /dev/null 2>&1
     umount /mnt
     sleep 1
 
     echo "Mounting Subvolumes"
-    mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/cryptvoid /mnt
+    mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/cryptvoid /mnt > /dev/null 2>&1
     mkdir /mnt/{boot,home,.snapshots}
     mkdir /mnt/boot/efi
-    mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/cryptvoid /mnt/home
-    mount -o $BTRFS_OPTS,subvol=@snapshots /dev/mapper/cryptvoid /mnt/.snapshots
+    mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/cryptvoid /mnt/home > /dev/null 2>&1
+    mount -o $BTRFS_OPTS,subvol=@snapshots /dev/mapper/cryptvoid /mnt/.snapshots > /dev/null 2>&1
     sleep 1
 
     # Directories we do not want to snapshot
     echo "Creating ignored subvolumes"
     mkdir -p /mnt/var/cache
-    btrfs su cr /mnt/var/cache/xbps
-    btrfs su cr /mnt/var/tmp
-    btrfs su cr /mnt/srv
+    btrfs su cr /mnt/var/cache/xbps > /dev/null 2>&1
+    btrfs su cr /mnt/var/tmp > /dev/null 2>&1
+    btrfs su cr /mnt/srv > /dev/null 2>&1
     sleep 1
 
     echo "Mounting EFI Partition"
-    mount -o rw,noatime $PART_EFI /mnt/boot/efi
+    mount -o rw,noatime "$PART_EFI" /mnt/boot/efi > /dev/null 2>&1
     sleep 1
 ) 2>&1 | dialog --title "$TITLE" --progressbox 15 70
 
