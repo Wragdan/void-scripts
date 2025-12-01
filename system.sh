@@ -4,25 +4,21 @@ SCRIPT_DIR=$(dirname "$0")
 
 source "$SCRIPT_DIR/env.bash"
 
-red() { echo -e "\033[31m$*\033[0m"; }
-green() { echo -e "\033[32m$*\033[0m"; }
-bold_red() { echo -e "\033[1;31m$*\033[0m"; }
-
 chown root:root /
 chmod 755 /
 
-green "Setting timezone to America/Tegucigalpa"
+echo "Setting timezone to America/Tegucigalpa"
 ln -sf /usr/share/zoneinfo/America/Tegucigalpa /etc/localtime
 
-green "Setting locale to en_US.UTF-8"
+echo "Setting locale to en_US.UTF-8"
 cp /etc/default/libc-locales /etc/default/libc-locales.backup
 sed -i 's/^\#en_US.UTF-8/en_US.UTF-8/' /etc/default/libc-locales
 xbps-reconfigure -f glibc-locales
 
-green "Changing root password"
+echo "Changing root password"
 passwd root
 
-green "What would the hostname be?"
+echo "What would the hostname be?"
 read HOST_NAME
 
 echo $HOST_NAME > /etc/hostname
@@ -36,24 +32,24 @@ cat <<EOF > /etc/hosts
 127.0.1.1        ${HOST_NAME}.localdomain ${HOST_NAME}
 EOF
 
-green "Creating user 'wragdan'"
+echo "Creating user 'wragdan'"
 useradd wragdan
-green "Changing password for 'wragdan'"
+echo "Changing password for 'wragdan'"
 passwd wragdan
-green "Changing groups for 'wragdan'"
+echo "Changing groups for 'wragdan'"
 usermod -aG wheel,input,audio,video,scanner,network,storage wragdan
 
-green "Configuring sudoers"
+echo "Configuring sudoers"
 echo "%wheel ALL=(ALL:ALL) ALL" >/etc/sudoers.d/00-wheel-can-sudo
 echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff" > /etc/sudoers.d/01-cmds-without-password
 
-green "Change default shell to bash for root"
+echo "Change default shell to bash for root"
 chsh -s /bin/bash root
 
-green "Sync repositories"
+echo "Sync repositories"
 xbps-install -Sy
 
-green "Add nonfree and multilib repositories"
+echo "Add nonfree and multilib repositories"
 xbps-install -y void-repo-nonfree
 xbps-install -Sy
 xbps-install -y void-repo-multilib
@@ -63,7 +59,7 @@ EFI_UUID=$(blkid -s UUID -o value $PART_EFI)
 ROOT_UUID=$(blkid -s UUID -o value /dev/mapper/cryptvoid)
 LUKS_UUID=$(blkid -s UUID -o value $PART_LINUX)
 
-green "Generating fstab"
+echo "Generating fstab"
 cat <<EOF > /etc/fstab
 # <file system>                           <dir>         <type>    <options>                             <dump> <pass>
 UUID=$ROOT_UUID /             btrfs     $BTRFS_OPTS,subvol=@            0 1
@@ -74,85 +70,85 @@ tmpfs                                     /tmp          tmpfs     defaults,nosui
 EOF
 
 if ! grep -q "GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub; then
-  green "Adding line 'GRUB_ENABLE_CRYPTODISK=y' to /etc/default/grub"  
+  echo "Adding line 'GRUB_ENABLE_CRYPTODISK=y' to /etc/default/grub"  
   echo GRUB_ENABLE_CRYPTODISK=y >> /etc/default/grub
 fi
 
 #GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID=<your_luks_uuid>:cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@ loglevel=3 quiet"
 
-green "Backing up /etc/default/grub"
+echo "Backing up /etc/default/grub"
 cp /etc/default/grub /etc/default/grub.backup
 
 #OLDLINE='GRUB_CMDLINE_LINUX_DEFAULT*'
 #NEWLINE='GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 rd.auto=1 rd.luks.allow-discards"'
 
-green "Changing GRUB_CMDLINE_LINUX_DEFAULT"
+echo "Changing GRUB_CMDLINE_LINUX_DEFAULT"
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4"/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=4 rd.auto=1 rd.luks.allow-discards"/' /etc/default/grub
-green "Check results"
+echo "Check results"
 cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
 
-green "Configuring luks key"
+echo "Configuring luks key"
 dd bs=1 count=64 if=/dev/urandom of=/boot/volume.key
-green "Please anter your crypt passphrase"
+echo "Please anter your crypt passphrase"
 cryptsetup luksAddKey $PART_LINUX /boot/volume.key
 chmod 000 /boot/volume.key
 chmod -R g-rwx,o-rwx /boot
 
-green "Adding key to /etc/crypttab"
+echo "Adding key to /etc/crypttab"
 cat <<EOF >> /etc/crypttab
 cryptvoid UUID=$LUKS_UUID /boot/volume.key luks
 EOF
 
-green "Creating file /etc/dracut.conf.d/10-crypt.conf"
+echo "Creating file /etc/dracut.conf.d/10-crypt.conf"
 cat <<EOF >> /etc/dracut.conf.d/10-crypt.conf
 install_items+=" /boot/volume.key /etc/crypttab "
 EOF
 
-green "Do you need --removable flag for grub? Type 'yes' if you need grub to be removable"
+echo "Do you need --removable flag for grub? Type 'yes' if you need grub to be removable"
 read ANSWER
 
 if [[ "$ANSWER" == "yes" ]]; then
-    green "Installing bootloader with --removable"
+    echo "Installing bootloader with --removable"
     grub-install $FULL_DRIVE --removable
 else
-    green "Installing bootloader"
+    echo "Installing bootloader"
     grub-install $FULL_DRIVE
 fi
 
-green "Installing necessary packages to continue installation on reboot"
+echo "Installing necessary packages to continue installation on reboot"
 xbps-install -Sy git xtools
 
-green "Ensure an initramfs is generated"
+echo "Ensure an initramfs is generated"
 xbps-reconfigure -fa
 
-green "Copying void-scripts to user 'wragdan'"
+echo "Copying void-scripts to user 'wragdan'"
 cp -r /tmp/void-scripts /home/wragdan/void-scripts
 chown -R wragdan:wragdan /home/wragdan/void-scripts
 
-green "Configuring yubikey support"
+echo "Configuring yubikey support"
 mkdir -p /etc/udev/rules.d
 cat <<EOF > /etc/udev/rules.d/90-yubikey.rules
 ACTION=="add|change",SUBSYSTEM=="usb|hidraw", ATTRS={idvendor}=="1050", GROUP="wheel", MODE=0660
 EOF
 
-green "nouveau blacklist"
+echo "nouveau blacklist"
 cat <<EOF > /etc/modprobe.d/nouveau_blacklist.conf
 blacklist nouveau
 EOF
 
-green "Installing librewolf"
+echo "Installing librewolf"
 cat <<EOF > /etc/xbps.d/20-librewolf.conf
 repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 xbps-install -Su librewolf
 
-green "Installing ungoogled-chromium"
+echo "Installing ungoogled-chromium"
 cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
 repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
 EOF
 xbps-install -Su librewolf
 
-green "Configuring dumb_runtime_dir"
+echo "Configuring dumb_runtime_dir"
 sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
 cat <<EOF > /etc/pam.d/system-login
 session		optional	pam_dumb_runtime_dir.so
@@ -160,5 +156,5 @@ EOF
 
 sudo xbps-install -S sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
-green "All green, exiting... After exit please reboot your computer"
+echo "All echo, exiting... After exit please reboot your computer"
 exit
