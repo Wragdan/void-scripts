@@ -14,7 +14,7 @@ source env.bash
     echo "Copying void scripts to /mnt"
     cp -r ../void-scripts /mnt/tmp/void-scripts
 
-) 2>&1 | dialog --title "$TITLE" --progressbox 30 120
+) 2>&1 | dialog --title "$TITLE" --progressbox 30 70
 
 
 dialog --backtitle "$BACKTITLE" \
