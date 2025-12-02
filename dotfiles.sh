@@ -4,7 +4,6 @@ set -e
 
 git clone https://github.com/Wragdan/dotfiles /home/wragdan/.dotfiles
 cd /home/wragdan/.dotfiles
-git checkout voidlinux
 
 stow x11
 stow shell

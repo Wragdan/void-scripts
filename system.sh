@@ -156,9 +156,8 @@ ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
 ln -s /etc/sv/chronyd /etc/runit/runsvdir/default/
 ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
 
-su - wragdan -c 'bash /home/wragdan/void-scripts/packages.sh'
-
-su - wragdan -c 'bash /home/wragdan/void-scripts/dotfiles.sh'
+#su - wragdan -c 'bash /home/wragdan/void-scripts/packages.sh'
+#su - wragdan -c 'bash /home/wragdan/void-scripts/dotfiles.sh'
 
 echo "All echo, exiting... After exit please reboot your computer"
 

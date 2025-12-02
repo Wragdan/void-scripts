@@ -17,21 +17,19 @@ echo "Bootstrapping xbps-src"
 echo "Building and Installing 'dwm' - the best window manager"
 ./xbps-src pkg dwm-wragdan
 xi -fy dwm-wragdan
-./xbps-src clean
 
 echo "Building and Installing 'st' - the best terminal emulator"
 ./xbps-src pkg st-wragdan
 xi -fy st-wragdan
-./xbps-src clean
 
 echo "Installing fnm"
 ./xbps-src pkg fnm
 xi -fy fnm
-./xbps-src clean
 
 echo "Building and Installing ueberzugpp"
 ./xbps-src pkg ueberzugpp 
 xi -fy ueberzugpp 
+
 ./xbps-src clean
 
 echo "Setting default shell for wragdan to zsh"
