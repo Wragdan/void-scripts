@@ -20,8 +20,8 @@ echo "Bootstrapping xbps-src"
 ./xbps-src -t pkg fnm
 ./xbps-src -t pkg ueberzugpp 
 
-sleep 10
 echo "Finished xbps-src installs"
+sleep 10
 
 xi -fy dwm-wragdan st-wragdan fnm ueberzugpp 
 
