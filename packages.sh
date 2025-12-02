@@ -9,6 +9,9 @@ fi
 cd /home/wragdan/void-packages
 git checkout wragdan
 
+echo "Starting xbps-src installs"
+sleep 10
+
 echo "Bootstrapping xbps-src"
 ./xbps-src binary-bootstrap
 
@@ -16,6 +19,9 @@ echo "Bootstrapping xbps-src"
 ./xbps-src -t pkg st-wragdan
 ./xbps-src -t pkg fnm
 ./xbps-src -t pkg ueberzugpp 
+
+sleep 10
+echo "Finished xbps-src installs"
 
 xi -fy dwm-wragdan st-wragdan fnm ueberzugpp 
 
