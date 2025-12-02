@@ -2,7 +2,7 @@
 
 set -e
 
-git clone https://github.com/Wragdan/dotfiles /home/wragdan/.dotfiles
+git clone https://github.com/Wragdan/dotfiles.git /home/wragdan/.dotfiles
 cd /home/wragdan/.dotfiles
 
 stow x11
