@@ -37,7 +37,7 @@ useradd wragdan
 echo "Changing password for 'wragdan'"
 passwd wragdan
 echo "Changing groups for 'wragdan'"
-usermod -aG wheel,input,audio,video,scanner,network,storage wragdan
+usermod -aG wheel,input,audio,video,scanner,network,storage,xbuilder wragdan
 
 echo "Configuring sudoers"
 echo "%wheel ALL=(ALL:ALL) ALL" >/etc/sudoers.d/00-wheel-can-sudo
