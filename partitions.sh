@@ -183,4 +183,6 @@ dialog --backtitle "$BACKTITLE" \
        --title "Chroot prepared" \
        --msgbox "After chroot starts, run /tmp/void-scripts/system.sh" 8 50
 
+cp /etc/wpa_supplicant/wpa_supplicant.conf /mnt/etc/wpa_supplicant/wpa_supplicant.conf
+
 xchroot /mnt /tmp/void-scripts/system.sh

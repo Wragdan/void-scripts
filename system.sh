@@ -21,7 +21,7 @@ passwd root
 echo "What would the hostname be?"
 read HOST_NAME
 
-echo $HOST_NAME > /etc/hostname
+echo "$HOST_NAME" > /etc/hostname
 
 cat <<EOF > /etc/hosts
 #
@@ -103,10 +103,10 @@ read ANSWER
 
 if [[ "$ANSWER" == "yes" ]]; then
     echo "Installing bootloader with --removable"
-    grub-install $FULL_DRIVE --removable
+    grub-install "$FULL_DRIVE" --removable
 else
     echo "Installing bootloader"
-    grub-install $FULL_DRIVE
+    grub-install "$FULL_DRIVE"
 fi
 
 echo "Installing necessary packages to continue installation on reboot"
@@ -150,5 +150,16 @@ EOF
 
 sudo xbps-install -Syu sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
+ln -s /etc/sv/wpa_supplicant /etc/runit/runsvdir/default/ 
+ln -s /etc/sv/dhcpcd-eth0 /etc/runit/runsvdir/default/ 
+ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
+ln -s /etc/sv/chronyd /etc/runit/runsvdir/default/
+ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
+
+su - wragdan -c 'bash /home/wragdan/void-scripts/packages.sh'
+
+su - wragdan -c 'bash /home/wragdan/void-scripts/dotfiles.sh'
+
 echo "All echo, exiting... After exit please reboot your computer"
-exit
+
+exit 0
