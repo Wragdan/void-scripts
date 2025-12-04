@@ -2,6 +2,8 @@
 
 set -e
 
+sudo wragdan
+
 echo "Cloning personal void-packages"
 if [ ! -d "/home/wragdan/void-packages" ] ; then
     git clone https://github.com/Wragdan/void-packages /home/wragdan/void-packages
@@ -32,3 +34,33 @@ chsh -s /usr/bin/zsh
 
 echo "Creating DWM log directory"
 mkdir -p /home/wragdan/.logs/dwm
+
+
+git clone https://github.com/Wragdan/dotfiles.git /home/wragdan/.dotfiles
+cd /home/wragdan/.dotfiles
+
+stow x11
+stow shell
+stow zsh
+stow zathura
+stow yazi
+stow sxhkd
+stow starship
+stow pulse
+stow pipewire
+stow picom
+stow nvim
+stow local
+stow mpd
+stow ncmpcpp
+stow fontconfig
+stow eww
+stow git
+
+touch /home/wragdan/.config/shell/secrets
+
+echo "Configuring rust - Please select default installation"
+rustup-init
+
+echo "Installing node version 22"
+fnm install 22

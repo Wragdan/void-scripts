@@ -41,7 +41,8 @@ usermod -aG wheel,input,audio,video,scanner,network,storage,xbuilder wragdan
 
 echo "Configuring sudoers"
 echo "%wheel ALL=(ALL:ALL) ALL" >/etc/sudoers.d/00-wheel-can-sudo
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff" > /etc/sudoers.d/01-cmds-without-password
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff,/usr/bin/mount,/usr/bin/umount,/usr/bin/xbps-install -Syu,/usr/bin/xbps-install -Syyu,/usr/bin/xbps-install -Syyu --noconfirm," > /etc/sudoers.d/01-cmds-without-password
+echo "Defaults editor=/usr/bin/nvim" >/etc/sudoers.d/02-visudo-editor
 
 echo "Change default shell to bash for root"
 chsh -s /bin/bash root
@@ -155,10 +156,4 @@ ln -s /etc/sv/dhcpcd-eth0 /etc/runit/runsvdir/default/
 ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
 ln -s /etc/sv/chronyd /etc/runit/runsvdir/default/
 ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
-
-su - wragdan -c 'bash /home/wragdan/void-scripts/packages.sh'
-su - wragdan -c 'bash /home/wragdan/void-scripts/dotfiles.sh'
-
-echo "All echo, exiting... After exit please reboot your computer"
-
 exit 0
