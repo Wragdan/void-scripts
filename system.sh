@@ -146,7 +146,26 @@ xbps-install -Syu ungoogled-chromium
 echo "Configuring dumb_runtime_dir"
 sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
 cat <<EOF > /etc/pam.d/system-login
-session		optional	pam_dumb_runtime_dir.so
+#%PAM-1.0
+
+auth       required   pam_shells.so
+auth       requisite  pam_nologin.so
+auth       include    system-auth
+
+account    required   pam_access.so
+account    required   pam_nologin.so
+account    include    system-auth
+
+password   include    system-auth
+
+session    optional   pam_loginuid.so
+session    include    system-auth
+session    optional   pam_motd.so          motd=/etc/motd
+session    optional   pam_mail.so          dir=/var/mail standard quiet
+-session   optional   pam_turnstile.so
+-session   optional   pam_elogind.so
+session    optional   pam_dumb_runtime_dir.so
+session    required   pam_env.so
 EOF
 
 sudo xbps-install -Syu NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
