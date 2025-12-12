@@ -123,7 +123,7 @@ chown -R wragdan:wragdan /home/wragdan/void-scripts
 echo "Configuring yubikey support"
 mkdir -p /etc/udev/rules.d
 cat <<EOF > /etc/udev/rules.d/90-yubikey.rules
-ACTION=="add|change",SUBSYSTEM=="usb|hidraw", ATTRS={idvendor}=="1050", GROUP="wheel", MODE=0660
+ACTION=="add|change",SUBSYSTEM=="usb|hidraw",ATTRS={idvendor}=="1050",GROUP="wheel",MODE=0660
 EOF
 
 echo "nouveau blacklist"
@@ -168,7 +168,30 @@ session    optional   pam_dumb_runtime_dir.so
 session    required   pam_env.so
 EOF
 
-sudo xbps-install -Syu NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+cat <<EOF > /etc/X11/xorg.conf.d/70-synaptics.conf
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "synaptics"
+    MatchIsTouchpad "on"
+        Option "TapButton1" "1"
+        Option "TapButton2" "3"
+        Option "TapButton3" "2"
+        Option "VertEdgeScroll" "on"
+        Option "VertTwoFingerScroll" "on"
+        Option "HorizEdgeScroll" "on"
+        Option "HorizTwoFingerScroll" "on"
+        Option "CircularScrolling" "on"
+        Option "CircScrollTrigger" "2"
+        Option "EmulateTwoFingerMinZ" "40"
+        Option "EmulateTwoFingerMinW" "8"
+        Option "CoastingSpeed" "0"
+        Option "FingerLow" "30"
+        Option "FingerHigh" "50"
+        Option "MaxTapTime" "125"
+EndSection
+EOF
+
+sudo xbps-install -Syu nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
 #ln -s /etc/sv/wpa_supplicant /etc/runit/runsvdir/default/ 
 #ln -s /etc/sv/dhcpcd-eth0 /etc/runit/runsvdir/default/ 
@@ -176,4 +199,5 @@ sudo xbps-install -Syu NetworkManager delta gcc sof-firmware alsa-utils eww stow
 ln -s /etc/sv/NetworkManager /etc/runit/runsvdir/default/
 ln -s /etc/sv/chronyd /etc/runit/runsvdir/default/
 ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
+ln -s /etc/sv/acpid /etc/runit/runsvdir/default/
 exit 0
