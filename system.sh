@@ -40,9 +40,13 @@ echo "Changing groups for 'wragdan'"
 usermod -aG wheel,input,audio,video,scanner,network,storage,xbuilder wragdan
 
 echo "Configuring sudoers"
-echo "%wheel ALL=(ALL:ALL) ALL" >/etc/sudoers.d/00-wheel-can-sudo
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff,/usr/bin/mount,/usr/bin/umount,/usr/bin/xbps-install -Syu,/usr/bin/xbps-install -Syyu,/usr/bin/xbps-install -Syyu --noconfirm" > /etc/sudoers.d/01-cmds-without-password
-echo "Defaults editor=/usr/bin/nvim" >/etc/sudoers.d/02-visudo-editor
+echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/00-wheel-can-sudo
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff,/usr/bin/mount,/usr/bin/umount,/usr/bin/xbps-install" > /etc/sudoers.d/01-cmds-without-password
+echo "Defaults editor=/usr/bin/nvim" > /etc/sudoers.d/02-visudo-editor
+
+chmod 0440 /etc/sudoers.d/00-wheel-can-sudo
+chmod 0440 /etc/sudoers.d/01-cmds-without-password
+chmod 0440 /etc/sudoers.d/02-visudo-editor
 
 echo "Change default shell to bash for root"
 chsh -s /bin/bash root
@@ -171,7 +175,7 @@ EOF
 
 cat <<EOF > /etc/X11/xorg.conf.d/70-synaptics.conf
 Section "InputClass"
-    Identifier "touchpad"
+    Identifier "Synaptics TM3471-020"
     Driver "synaptics"
     MatchIsTouchpad "on"
         Option "TapButton1" "1"
@@ -192,7 +196,7 @@ Section "InputClass"
 EndSection
 EOF
 
-sudo xbps-install -Syu nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+sudo xbps-install -Syu rofi nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
 
 #ln -s /etc/sv/wpa_supplicant /etc/runit/runsvdir/default/ 
 #ln -s /etc/sv/dhcpcd-eth0 /etc/runit/runsvdir/default/ 

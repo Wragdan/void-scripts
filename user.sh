@@ -34,6 +34,7 @@ chsh -s /usr/bin/zsh
 
 echo "Creating DWM log directory"
 mkdir -p /home/wragdan/.logs/dwm
+mkdir -p /home/wragdan/.cache/zsh
 
 
 git clone https://github.com/Wragdan/dotfiles.git /home/wragdan/.dotfiles
