@@ -27,7 +27,7 @@ sudo wragdan
 
 # xi -fy dwm-wragdan st-wragdan fnm ueberzugpp 
 
-./xbps-src clean
+#./xbps-src clean
 
 echo "Setting default shell for wragdan to zsh"
 chsh -s /usr/bin/zsh
