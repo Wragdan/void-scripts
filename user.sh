@@ -2,7 +2,7 @@
 
 set -e
 
-sudo wragdan
+su wragdan
 
 # echo "Cloning personal void-packages"
 # if [ ! -d "/home/wragdan/void-packages" ] ; then
