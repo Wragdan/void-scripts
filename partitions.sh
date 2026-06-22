@@ -185,5 +185,5 @@ dialog --backtitle "$BACKTITLE" \
 
 cp /etc/wpa_supplicant/wpa_supplicant.conf /mnt/etc/wpa_supplicant/wpa_supplicant.conf
 
-xchroot /mnt /tmp/void-scripts/system.sh
-xchroot /mnt /tmp/void-scripts/user.sh
+# xchroot /mnt /tmp/void-scripts/system.sh
+# xchroot /mnt /tmp/void-scripts/user.sh

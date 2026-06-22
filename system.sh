@@ -37,11 +37,11 @@ useradd wragdan
 echo "Changing password for 'wragdan'"
 passwd wragdan
 echo "Changing groups for 'wragdan'"
-usermod -aG wheel,input,audio,video,scanner,network,storage,xbuilder wragdan
+usermod -aG wheel,dialout,input,audio,video,scanner,network,input,storage,xbuilder,bluetooth,docker wragdan
 
 echo "Configuring sudoers"
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/00-wheel-can-sudo
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff,/usr/bin/mount,/usr/bin/umount,/usr/bin/xbps-install" > /etc/sudoers.d/01-cmds-without-password
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/poweroff,/usr/bin/mount,/usr/bin/umount,/usr/bin/xbps-install,/usr/bin/nmtui" > /etc/sudoers.d/01-cmds-without-password
 echo "Defaults editor=/usr/bin/nvim" > /etc/sudoers.d/02-visudo-editor
 
 chmod 0440 /etc/sudoers.d/00-wheel-can-sudo
@@ -142,11 +142,11 @@ repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 xbps-install -Syu librewolf
 
-echo "Installing ungoogled-chromium"
-cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
-repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
-EOF
-xbps-install -Syu ungoogled-chromium
+# echo "Installing ungoogled-chromium"
+# cat <<EOF > /etc/xbps.d/20-ungoogled-chromium.conf
+# repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
+# EOF
+# xbps-install -Syu ungoogled-chromium
 
 echo "Configuring dumb_runtime_dir"
 sed -i '/pam_dumb_runtime_dir.so/d' /etc/pam.d/system-login
@@ -196,7 +196,9 @@ Section "InputClass"
 EndSection
 EOF
 
-sudo xbps-install -Syu rofi nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils eww stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+#sudo xbps-install -Syu nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils stow git neovim xorg dmenu zsh feh xrandr picom dunst pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg xclip cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+sudo xbps-install -Syu nerd-fonts htop fastfetch NetworkManager delta gcc sof-firmware alsa-utils stow git neovim dmenu zsh pulsemixer pipewire wireplumber sxhkd zoxide dbus starship yazi zathura eza fzf zsh-syntax-highlighting zsh-autosuggestions rustup luarocks ripgrep gnupg cifs-utils dumb_runtime_dir chrony mpd ncmpcpp noto-fonts-cjk noto-fonts-emoji
+# sudo xbps-install -Syu feh xrandr picom dunst xorg xclip
 
 #ln -s /etc/sv/wpa_supplicant /etc/runit/runsvdir/default/ 
 #ln -s /etc/sv/dhcpcd-eth0 /etc/runit/runsvdir/default/ 
