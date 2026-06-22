@@ -30,40 +30,38 @@ set -e
 #./xbps-src clean
 
 echo "Setting default shell for wragdan to zsh"
-chsh -s /usr/bin/zsh wragdan
+chsh -s /usr/bin/zsh
 
 echo "Creating DWM log directory"
 # mkdir -p /home/wragdan/.logs/dwm
 mkdir -p /home/wragdan/.cache/zsh
-chown -R wragdan:wragdan /home/wragdan/.cache/zsh
 
 
 git clone https://github.com/Wragdan/dotfiles.git /home/wragdan/.dotfiles
-chown -R wragdan:wragdan /home/wragdan/.dotfiles
 cd /home/wragdan/.dotfiles
 
 # stow x11
-sudo -u wragdan stow shell
-sudo -u wragdan stow zsh
-sudo -u wragdan stow zathura
-sudo -u wragdan stow yazi
-sudo -u wragdan stow sxhkd
-sudo -u wragdan stow starship
-sudo -u wragdan stow pulse
-sudo -u wragdan stow pipewire
-sudo -u wragdan stow picom
-sudo -u wragdan stow nvim
-sudo -u wragdan stow local
-sudo -u wragdan stow mpd
-sudo -u wragdan stow ncmpcpp
-sudo -u wragdan stow fontconfig
-# sudo -u wragdan stow eww
-sudo -u wragdan stow git
+stow shell
+stow zsh
+stow zathura
+stow yazi
+stow sxhkd
+stow starship
+stow pulse
+stow pipewire
+stow picom
+stow nvim
+stow local
+stow mpd
+stow ncmpcpp
+stow fontconfig
+# stow eww
+stow git
 
-sudo -u wragdan touch /home/wragdan/.config/shell/secrets
+touch /home/wragdan/.config/shell/secrets
 
-#echo "Configuring rust - Please select default installation"
-#rustup-init
+echo "Configuring rust - Please select default installation"
+rustup-init
 
 # echo "Installing node version 22"
 # fnm install 22
